@@ -1,0 +1,55 @@
+type Approval @entity {
+  id: ID!
+  owner: Bytes! # address
+  approved: Bytes! # address
+  tokenId: BigInt! # uint256
+}
+
+type ApprovalForAll @entity {
+  id: ID!
+  owner: Bytes! # address
+  operator: Bytes! # address
+  approved: Boolean! # bool
+}
+
+type GladiatorBurnt @entity {
+  id: ID!
+  tokenId: BigInt! # uint256
+}
+
+type NameChanged @entity {
+  id: ID!
+  tokenId: BigInt! # uint256
+  newName: String! # string
+}
+
+type NewGladiator @entity {
+  id: ID!
+  owner: Bytes! # address
+  tokenId: BigInt! # uint256
+  character_name: String! # string
+  character_sex: Boolean! # bool
+  character_class: Int! # uint16
+  character_bonusStats: Int! # uint16
+  character_ethnicity: Int! # uint8
+  character_recruitedAt: BigInt! # uint256
+}
+
+type OwnershipTransferred @entity {
+  id: ID!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+}
+
+type SexChanged @entity {
+  id: ID!
+  tokenId: BigInt! # uint256
+  newSex: Boolean! # bool
+}
+
+type Transfer @entity {
+  id: ID!
+  from: Bytes! # address
+  to: Bytes! # address
+  tokenId: BigInt! # uint256
+}
