@@ -1,6 +1,6 @@
 specVersion: 0.0.4
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: Gladiator
@@ -17,7 +17,7 @@ dataSources:
         - Gladiator
       abis:
         - name: Gladiator
-          file: ./abis/Gladiator.json
+          file: Gladiator/abis/Gladiator.json
       eventHandlers:
         - event: GladiatorBurnt(indexed uint256)
           handler: handleGladiatorBurnt
@@ -28,7 +28,7 @@ dataSources:
           handler: handleNewGladiator
         - event: SexChanged(indexed uint256,bool)
           handler: handleSexChanged
-      file: ./src/gladiator.ts
+      file: Gladiator/Gladiator.wasm
   - kind: ethereum
     name: Items
     network: chapel
@@ -44,7 +44,7 @@ dataSources:
         - Item
       abis:
         - name: Items
-          file: ./abis/Items.json
+          file: Items/abis/Items.json
       eventHandlers:
         - event: ItemBurnt(indexed uint256)
           handler: handleItemBurnt
@@ -52,7 +52,7 @@ dataSources:
           handler: handleItemRepaired
         - event: NewItem(indexed address,uint256,(uint16,uint16,uint8,uint8))
           handler: handleNewItem
-      file: ./src/items.ts
+      file: Items/Items.wasm
   - kind: ethereum
     name: Marketplace
     network: chapel
@@ -68,7 +68,7 @@ dataSources:
         - MarketTransaction
       abis:
         - name: Marketplace
-          file: ./abis/Marketplace.json
+          file: Marketplace/abis/Marketplace.json
       eventHandlers:
         - event: NftListed(indexed address,indexed address,indexed uint256,uint256,uint256)
           handler: handleNftListed
@@ -76,4 +76,4 @@ dataSources:
           handler: handleNftSold
         - event: ListingCancelled(indexed address,indexed address,indexed uint256)
           handler: handleListingCancelled
-      file: ./src/marketplace.ts
+      file: Marketplace/Marketplace.wasm

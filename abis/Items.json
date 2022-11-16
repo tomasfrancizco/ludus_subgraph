@@ -3,8 +3,18 @@
     "inputs": [
       { "internalType": "uint256", "name": "_priceBNB", "type": "uint256" },
       { "internalType": "uint256", "name": "_priceToken", "type": "uint256" },
-      { "internalType": "uint256", "name": "_updateFee", "type": "uint256" },
-      { "internalType": "contract IERC20", "name": "_token", "type": "address" }
+      { "internalType": "uint256", "name": "_repairFeeBNB", "type": "uint256" },
+      {
+        "internalType": "uint256",
+        "name": "_repairFeeToken",
+        "type": "uint256"
+      },
+      {
+        "internalType": "contract IERC20",
+        "name": "_token",
+        "type": "address"
+      },
+      { "internalType": "address", "name": "_signer", "type": "address" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
@@ -31,7 +41,7 @@
         "type": "uint256"
       }
     ],
-    "name": "Approval",
+    "name": "ItemsApproval",
     "type": "event"
   },
   {
@@ -56,7 +66,7 @@
         "type": "bool"
       }
     ],
-    "name": "ApprovalForAll",
+    "name": "ItemsApprovalForAll",
     "type": "event"
   },
   {
@@ -69,7 +79,7 @@
         "type": "uint256"
       }
     ],
-    "name": "GladiatorBurnt",
+    "name": "ItemBurnt",
     "type": "event"
   },
   {
@@ -83,12 +93,25 @@
       },
       {
         "indexed": false,
-        "internalType": "string",
-        "name": "newName",
-        "type": "string"
+        "internalType": "uint8",
+        "name": "newRepairs",
+        "type": "uint8"
       }
     ],
-    "name": "NameChanged",
+    "name": "ItemRepaired",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "nonce",
+        "type": "uint256"
+      }
+    ],
+    "name": "NewCraft",
     "type": "event"
   },
   {
@@ -101,31 +124,25 @@
         "type": "address"
       },
       {
-        "indexed": true,
+        "indexed": false,
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
       },
       {
         "components": [
-          { "internalType": "string", "name": "name", "type": "string" },
-          { "internalType": "bool", "name": "sex", "type": "bool" },
-          { "internalType": "uint16", "name": "classNum", "type": "uint16" },
-          { "internalType": "uint16", "name": "bonusStats", "type": "uint16" },
-          { "internalType": "uint8", "name": "ethnicity", "type": "uint8" },
-          {
-            "internalType": "uint256",
-            "name": "recruitedAt",
-            "type": "uint256"
-          }
+          { "internalType": "uint16", "name": "classId", "type": "uint16" },
+          { "internalType": "uint16", "name": "itemId", "type": "uint16" },
+          { "internalType": "uint8", "name": "tier", "type": "uint8" },
+          { "internalType": "uint8", "name": "repairs", "type": "uint8" }
         ],
         "indexed": false,
-        "internalType": "struct Gladiator.Character",
-        "name": "character",
+        "internalType": "struct Items.Item",
+        "name": "item",
         "type": "tuple"
       }
     ],
-    "name": "NewGladiator",
+    "name": "NewItem",
     "type": "event"
   },
   {
@@ -144,26 +161,7 @@
         "type": "address"
       }
     ],
-    "name": "OwnershipTransferred",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "newSex",
-        "type": "bool"
-      }
-    ],
-    "name": "SexChanged",
+    "name": "ItemsOwnershipTransferred",
     "type": "event"
   },
   {
@@ -188,7 +186,7 @@
         "type": "uint256"
       }
     ],
-    "name": "Transfer",
+    "name": "ItemsTransfer",
     "type": "event"
   },
   {
@@ -227,41 +225,10 @@
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
-      { "internalType": "string", "name": "newName", "type": "string" }
-    ],
-    "name": "changeName",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
-    ],
-    "name": "changeSex",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
-      { "internalType": "uint8", "name": "craftsmanClass", "type": "uint8" }
-    ],
-    "name": "convertToCraftsman",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
-    ],
-    "name": "convertToWeaponMaster",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "inputs": [{ "internalType": "uint16", "name": "", "type": "uint16" }],
+    "name": "classMods",
+    "outputs": [{ "internalType": "uint16", "name": "", "type": "uint16" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -277,14 +244,12 @@
     "inputs": [
       { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
     ],
-    "name": "getGladiatorOverview",
+    "name": "getItemOverview",
     "outputs": [
-      { "internalType": "string", "name": "", "type": "string" },
-      { "internalType": "bool", "name": "", "type": "bool" },
       { "internalType": "uint16", "name": "", "type": "uint16" },
       { "internalType": "uint16", "name": "", "type": "uint16" },
       { "internalType": "uint8", "name": "", "type": "uint8" },
-      { "internalType": "uint256", "name": "", "type": "uint256" }
+      { "internalType": "uint8", "name": "", "type": "uint8" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -293,40 +258,20 @@
     "inputs": [
       { "internalType": "address", "name": "user", "type": "address" }
     ],
-    "name": "getUserGladiators",
+    "name": "getUserItems",
     "outputs": [
       { "internalType": "uint256[]", "name": "", "type": "uint256[]" },
       {
         "components": [
-          { "internalType": "string", "name": "name", "type": "string" },
-          { "internalType": "bool", "name": "sex", "type": "bool" },
-          { "internalType": "uint16", "name": "classNum", "type": "uint16" },
-          { "internalType": "uint16", "name": "bonusStats", "type": "uint16" },
-          { "internalType": "uint8", "name": "ethnicity", "type": "uint8" },
-          {
-            "internalType": "uint256",
-            "name": "recruitedAt",
-            "type": "uint256"
-          }
+          { "internalType": "uint16", "name": "classId", "type": "uint16" },
+          { "internalType": "uint16", "name": "itemId", "type": "uint16" },
+          { "internalType": "uint8", "name": "tier", "type": "uint8" },
+          { "internalType": "uint8", "name": "repairs", "type": "uint8" }
         ],
-        "internalType": "struct Gladiator.Character[]",
+        "internalType": "struct Items.Item[]",
         "name": "",
         "type": "tuple[]"
       }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "name": "gladiators",
-    "outputs": [
-      { "internalType": "string", "name": "name", "type": "string" },
-      { "internalType": "bool", "name": "sex", "type": "bool" },
-      { "internalType": "uint16", "name": "classNum", "type": "uint16" },
-      { "internalType": "uint16", "name": "bonusStats", "type": "uint16" },
-      { "internalType": "uint8", "name": "ethnicity", "type": "uint8" },
-      { "internalType": "uint256", "name": "recruitedAt", "type": "uint256" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -342,6 +287,18 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "items",
+    "outputs": [
+      { "internalType": "uint16", "name": "classId", "type": "uint16" },
+      { "internalType": "uint16", "name": "itemId", "type": "uint16" },
+      { "internalType": "uint8", "name": "tier", "type": "uint8" },
+      { "internalType": "uint8", "name": "repairs", "type": "uint8" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "marketplaceAddress",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
@@ -349,7 +306,22 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "string", "name": "name", "type": "string" }],
+    "inputs": [
+      { "internalType": "address", "name": "beneficiary", "type": "address" },
+      { "internalType": "uint16", "name": "classId", "type": "uint16" },
+      { "internalType": "uint16", "name": "itemId", "type": "uint16" },
+      { "internalType": "uint8", "name": "tier", "type": "uint8" }
+    ],
+    "name": "mint",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint16", "name": "itemClass", "type": "uint16" },
+      { "internalType": "uint8", "name": "amount", "type": "uint8" }
+    ],
     "name": "mint",
     "outputs": [],
     "stateMutability": "payable",
@@ -357,16 +329,24 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "beneficiary", "type": "address" },
-      { "internalType": "string", "name": "name", "type": "string" },
-      { "internalType": "uint16", "name": "classNum", "type": "uint16" },
-      { "internalType": "bool", "name": "sex", "type": "bool" },
-      { "internalType": "uint16", "name": "bonusStats", "type": "uint16" },
-      { "internalType": "uint8", "name": "ethnicity", "type": "uint8" }
+      { "internalType": "uint8", "name": "setAmount", "type": "uint8" }
     ],
-    "name": "mintGift",
+    "name": "mintSet",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint16", "name": "classId", "type": "uint16" },
+      { "internalType": "uint16", "name": "itemId", "type": "uint16" },
+      { "internalType": "uint8", "name": "tier", "type": "uint8" },
+      { "internalType": "uint256", "name": "nonce", "type": "uint256" },
+      { "internalType": "bytes", "name": "signature", "type": "bytes" }
+    ],
+    "name": "mintWithCraftsman",
+    "outputs": [],
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -415,6 +395,15 @@
   },
   {
     "inputs": [
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
+    ],
+    "name": "repair",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "address", "name": "from", "type": "address" },
       { "internalType": "address", "name": "to", "type": "address" },
       { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
@@ -459,11 +448,23 @@
     "inputs": [
       { "internalType": "uint256", "name": "_priceBNB", "type": "uint256" },
       { "internalType": "uint256", "name": "_priceToken", "type": "uint256" },
-      { "internalType": "uint256", "name": "_updateFee", "type": "uint256" }
+      { "internalType": "uint256", "name": "_repairFeeBNB", "type": "uint256" },
+      {
+        "internalType": "uint256",
+        "name": "_repairFeeToken",
+        "type": "uint256"
+      }
     ],
     "name": "setPrices",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "signer",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -548,36 +549,12 @@
   },
   {
     "inputs": [
-      { "internalType": "uint16", "name": "newBonusStatsMod", "type": "uint16" }
-    ],
-    "name": "updateBonusStatsMod",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint16", "name": "newClassMod", "type": "uint16" }
+      { "internalType": "uint16", "name": "classId", "type": "uint16" },
+      { "internalType": "uint16", "name": "newMod", "type": "uint16" }
     ],
     "name": "updateClassMod",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint8", "name": "newEthnicityMod", "type": "uint8" }
-    ],
-    "name": "updateEthnicityMod",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "updateFee",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -587,6 +564,13 @@
     "name": "updateMarketplaceAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "usedNonces",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
