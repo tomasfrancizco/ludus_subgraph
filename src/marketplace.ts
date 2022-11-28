@@ -32,6 +32,7 @@ export function handleNftListed(event: NftListedEvent): void {
     marketTx.unitPrice = event.params.unitPrice
     marketTx.previousOwner = event.params.owner
     // doesn't save new owner as it's now the marketplace contract
+    marketTx.isGladiator = true
     marketTx.listed = true
     marketTx.save()
   } else if (event.params.nft == itemsAddress) {
@@ -42,6 +43,7 @@ export function handleNftListed(event: NftListedEvent): void {
     marketTx.unitPrice = event.params.unitPrice
     marketTx.previousOwner = event.params.owner
     // doesn't save new owner as it's now the marketplace contract
+    marketTx.isGladiator = false
     marketTx.listed = true
     marketTx.save()
   }
@@ -57,7 +59,7 @@ export function handleNftSold(event: NftSoldEvent): void {
   let marketTx = new MarketTransaction(
     "CLASS_MKT" + "-" + event.params.tokenId.toHex()
   )
-co
+
   if (event.params.nft == gladiatorsAddress) {
     gladiator.previousOwner = event.params.previousOwner
     gladiator.owner = event.params.newOwner

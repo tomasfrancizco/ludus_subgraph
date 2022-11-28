@@ -359,6 +359,15 @@ export class MarketTransaction extends Entity {
     }
   }
 
+  get isGladiator(): boolean {
+    let value = this.get("isGladiator");
+    return value!.toBoolean();
+  }
+
+  set isGladiator(value: boolean) {
+    this.set("isGladiator", Value.fromBoolean(value));
+  }
+
   get listed(): boolean {
     let value = this.get("listed");
     return value!.toBoolean();

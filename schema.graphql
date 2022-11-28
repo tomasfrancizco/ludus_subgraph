@@ -35,5 +35,6 @@ type MarketTransaction @entity {
   unitPrice: BigInt!
   previousOwner: Bytes!
   newOwner: Bytes
+  isGladiator: Boolean!
   listed: Boolean!
 }
